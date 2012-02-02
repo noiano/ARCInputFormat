@@ -2,7 +2,8 @@ This project extracts from the original commoncrawl project only the ARCInputFor
 
 ## How to compile
 In order to ensure a successful compilation of the library please modify the build.proprieties file and set the hadoop.path variable correctly.
-Then simply invoke 
+Then simply invoke:
+
 ```
 [ant]
 ```
