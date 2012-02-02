@@ -5,7 +5,7 @@ In order to ensure a successful compilation of the library please modify the bui
 Then simply invoke:
 
 ```
-[ant]
+ant
 ```
 
 You'll find ARCInputFormat.jar ready for use.
