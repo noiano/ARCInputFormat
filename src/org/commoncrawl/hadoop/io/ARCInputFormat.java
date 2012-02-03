@@ -155,9 +155,13 @@ public class ARCInputFormat implements InputFormat, JobConfigurable {
     LOG.info("Block Size: " + blockSize);
     LOG.info("Queue Size: " + queueSize);
     LOG.info("IO Timeout: " + timeout);
-
+    
+    /**
+     * HdfsARCSource is the default ARCSource implementation. In the original common crawl ARCInputFormat.java
+     * JetS3tARCSource is the default ARCSource implementation.
+     */
     Class archiveSourceClass = job.getClass(P_ARC_SOURCE,
-        LocalARCSource.class, ARCSource.class);
+        HdfsARCSource.class, ARCSource.class);
     arcSource = (ARCSource) ReflectionUtils
         .newInstance(archiveSourceClass, job);
   }

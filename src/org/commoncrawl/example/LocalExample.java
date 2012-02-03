@@ -4,7 +4,6 @@ import java.io.IOException;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.FileInputFormat;
 import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.MapReduceBase;
@@ -15,19 +14,19 @@ import org.apache.hadoop.mapred.lib.NullOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.commoncrawl.hadoop.io.ARCInputFormat;
-import org.commoncrawl.hadoop.io.HdfsARCSource;
+import org.commoncrawl.hadoop.io.LocalARCSource;
 import org.commoncrawl.protocol.shared.ArcFileItem;
 
-public class HDFSExample extends Configured implements Tool {
+public class LocalExample extends Configured implements Tool {
 
   public static void main(String args[]) throws Exception {
-    ToolRunner.run(new HDFSExample(), args);
+    ToolRunner.run(new LocalExample(), args);
   }
     
   public int run(String[] args) throws Exception {
         
     if (args.length!=1) {
-      throw new RuntimeException("usage: "+getClass().getName()+" <hdfs path>");
+      throw new RuntimeException("usage: "+getClass().getName()+" <path to local arc file>");
     }
     
     JobConf conf = new JobConf(getConf(), getClass());
@@ -45,19 +44,14 @@ public class HDFSExample extends Configured implements Tool {
     conf.setInputFormat(ARCInputFormat.class);
     
     /**
-     * Let's set the appropriate ARCSourceClass, HdfsARCSource.class for HDFS, LocalARCSource for local filesystem.
+     * Let's set the appropriate ARCSourceClass, LocalARCSource for local filesystem.
      * */
-    ARCInputFormat.setARCSourceClass(conf, HdfsARCSource.class);
+    ARCInputFormat.setARCSourceClass(conf, LocalARCSource.class);
     
     /**
-     * Adding input file to HdfsARCsource. This step is mandatory
+     * Addding input file to LocalARCSource. This step is mandatory
      */
-    conf.set(HdfsARCSource.P_INPUTS, args[0] );
-    
-    /**
-     * Alternatively you can use
-     */
-    //FileInputFormat.setInputPaths(conf, args[0]);
+    conf.set(LocalARCSource.P_INPUTS, args[0] );
     
     conf.setMapperClass(MimeCounterMapper.class);    
     
